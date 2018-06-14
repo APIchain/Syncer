@@ -32,7 +32,7 @@ func main() {
 		//	fmt.Println(err)
 		//}
 		//fmt.Println(string(str))
-		fmt.Println("blockResult.Block.Number=",blockResult.Block.Number)
+		fmt.Println("blockResult.Block.Number=",sync.HexoToInt(blockResult.Block.Number))
 		var sqltxt []string
 		if len(blockResult.Block.Transactions) > 0{
 			str:=sync.GetEtherTransfer(blockResult.Block)

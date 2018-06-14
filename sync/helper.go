@@ -26,7 +26,7 @@ func hexoToString(input string) string {
 	return fmt.Sprintf(x.String())
 }
 
-func hexoToInt(input string) int64 {
+func HexoToInt(input string) int64 {
 	if input[:2] == "0x" {
 		num, _ := strconv.ParseInt(input[2:], 16, 64)
 		return num

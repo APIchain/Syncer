@@ -3,7 +3,6 @@ package config
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/Syncer/metadata"
 	"io/ioutil"
 	"log"
 	"os"
@@ -24,7 +23,6 @@ type Configuration struct {
 	HttpRestPort     int                `json:"HttpRestPort"`
 	HttpWsPort       int                `json:"HttpWsPort"`
 	PrintLevel       int                `json:"PrintLevel"`
-	TokenList        []*metadata.ScInfo `json:"TokenList"`
 	SyncServer       string             `json:"SyncServer"`
 	SyncServerPort   string             `json:"SyncServerPort"`
 	LockExpireTime   int64              `json:"LockExpireTime"`

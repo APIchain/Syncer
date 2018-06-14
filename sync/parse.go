@@ -10,8 +10,8 @@ func GetEtherTransfer(block metadata.BlockJson) string{
 	for _, v := range block.Transactions {
 		realData := &metadata.TxTransfer{
 			TxHash:    v.Hash,
-			Timestamp: hexoToInt(block.Timestamp),
-			Height:    hexoToInt(v.BlockNumber),
+			Timestamp: HexoToInt(block.Timestamp),
+			Height:    HexoToInt(v.BlockNumber),
 			From:      v.From,
 			To:        v.To,
 			Value:     hexoToString(v.Value),
