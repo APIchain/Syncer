@@ -1,0 +1,26 @@
+﻿{
+  "Configuration": {
+    "Magic": 7630401,
+    "Version": 23,
+    "SyncServer": "35.198.225.135",
+    "SYncServerPort" : "8545",
+    "HttpRestPort": 20334,
+    "PrintLevel": 1,
+    "TokenList": [
+      {
+        "Token": "GNX",
+        "ScAddr":"0xE35A5897CBba3f131b53551602E760972A3D82Da",
+        "ID": "0001"
+      },
+      {
+        "Token": "TNB",
+        "ScAddr":"0x0Ad3082f61a3d035605eD429449F7E95f781aFD0",
+        "ID": "0002"
+      }
+    ],
+    "MinAmount": 1000000000,
+    "LockExpireTime":15,
+    "SyncStart": 4600000,
+    "DefaultPageCount":20
+  }
+}
