@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	//"github.com/pkg/errors"
+	"github.com/Syncer/common/config"
 	"io/ioutil"
 	"net/http"
 	"math/big"
@@ -65,7 +65,7 @@ func (self *BlockFetchWoker) getBlock(height int) (metadata.BlockJson, error) {
 	var rpcResp metadata.RemoteRpcResut
 	data := fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["%s",true],"id":1}`,toBlockNumArg(big.NewInt(int64(height))))
 	body := bytes.NewReader([]byte(data))
-	url := "http://35.198.225.135:8545"
+	url := fmt.Sprintf("http://%s:%s",config.Parameters.SyncServer , config.Parameters.SyncServerPort)
 	resp, err := self.client.Post(url, "application/json", body)
 	if err != nil {
 		fmt.Println("http.Post, getblock failed, height", 10000, err)
