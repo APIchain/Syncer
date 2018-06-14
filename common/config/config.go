@@ -3,7 +3,7 @@ package config
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/IcoCrowdServer/metadata"
+	"github.com/Syncer/metadata"
 	"io/ioutil"
 	"log"
 	"os"

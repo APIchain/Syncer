@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/IcoCrowdServer/common/config"
+	"github.com/Syncer/common/config"
 	"io"
 	"io/ioutil"
 	"log"
