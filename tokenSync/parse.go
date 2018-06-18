@@ -4,13 +4,14 @@ import (
 	"github.com/Syncer/metadata"
 	"fmt"
 	"github.com/Syncer/common/log"
+	"github.com/Syncer/sync"
 )
 
-func GetTokenTransfer(logs *[]metadata.RpcEvent) string{
+func GetTokenTransfer(logs *[]metadata.RpcEvent) []string{
 	if len(*logs)< 1{
-		return ""
+		return nil
 	}
-	var result string
+	var result []string
 	for _, v := range *logs {
 		var from, to, value string
 		var err error
@@ -66,19 +67,17 @@ func GetTokenTransfer(logs *[]metadata.RpcEvent) string{
 		}
 		order := &metadata.SQLTokenTransfer{
 			TxHash:          v.TxHash,
+			LogIndex:        HexoToInt(v.Index),
 			Token:           v.Address,
 			From:            from,
 			To:              to,
 			Value:           value,
 			Height:          HexoToInt(v.BlockNumber),
-			//Timestamp:       HexoToInt(v.b),
+			Timestamp:       sync.BlockTime,
 		}
-		str,err:=order.Marshal()
-		if err != nil {
-			fmt.Println(err)
-			continue
+		if order.Value!="0"{
+			result=append(result, order.Marshal())
 		}
-		result = fmt.Sprintf("%s%s",result,str)
 	}
 
 	return  result

@@ -2,11 +2,13 @@ package sync
 
 import (
 	"github.com/Syncer/metadata"
-	"fmt"
 )
 
-func GetEtherTransfer(block metadata.RpcBlockJson) string{
-	var result string
+var BlockTime int64
+
+func GetEtherTransfer(block metadata.RpcBlockJson) []string{
+	var result []string
+	BlockTime = HexoToInt(block.Timestamp)
 	for _, v := range block.Transactions {
 		realData := &metadata.SQLTransfer{
 			TxHash:    v.Hash,
@@ -16,10 +18,10 @@ func GetEtherTransfer(block metadata.RpcBlockJson) string{
 			To:        v.To,
 			Value:     hexoToString(v.Value),
 		}
-		if v.Value == "0" || v.To==""{
+		if realData.Value == "0" || realData.To==""{
 			continue
 		}
-		return  fmt.Sprintf("%s\n%s",result,realData.Marshal())
+		result = append(result, realData.Marshal())
 	}
 	return result
 }

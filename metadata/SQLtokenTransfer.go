@@ -2,10 +2,12 @@ package metadata
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type SQLTokenTransfer struct {
 	TxHash          string
+	LogIndex        int64
 	Timestamp       int64
 	Height          int64
 	Token           string
@@ -14,18 +16,10 @@ type SQLTokenTransfer struct {
 	Value           string
 }
 
-func (this *SQLTokenTransfer) Marshal() ([]byte, error) {
-	str, err := json.Marshal(this)
-	if err != nil {
-		return nil, err
-	}
-	return str, nil
+func (this *SQLTokenTransfer) Marshal()string {
+	return fmt.Sprintf("INSERT INTO tokenTransfer(TxHash,LogIndex,Timestamp,Height,Token,Sender,SenderTo,Value) VALUES" +
+	"('%s',%d,'%s',%d,'%s','%s','%s','%s');", this.TxHash,this.LogIndex,int2time(this.Timestamp),this.Height,this.Token,this.From,this.To,this.Value)
 }
-
-//func (this *SQLTransfer) Marshal()string {
-//	return fmt.Sprintf("INSERT INTO ethTransfer(TxHash,Timestamp,Height,Sender,SendTo,Value) " +
-//		"VALUES ('%s','%s',%d,'%s','%s','%s');",this.TxHash,int2time(this.Timestamp),this.Height,this.From,this.To,this.Value)
-//}
 
 func UnMarshalTokenTransfer(str []byte) (*SQLTokenTransfer, error) {
 	info := new(SQLTokenTransfer)

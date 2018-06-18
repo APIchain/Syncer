@@ -22,7 +22,7 @@ func int2time(timxe int64) string{
 }
 
 func (this *SQLTransfer) Marshal()string {
-	return fmt.Sprintf("INSERT INTO ethTransfer(TxHash,Timestamp,Height,Sender,SendTo,Value) " +
+	return fmt.Sprintf("INSERT INTO etherTransfer(TxHash,Timestamp,Height,Sender,SendTo,Value) " +
 		"VALUES ('%s','%s',%d,'%s','%s','%s');",this.TxHash,int2time(this.Timestamp),this.Height,this.From,this.To,this.Value)
 }
 

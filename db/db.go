@@ -30,7 +30,6 @@ func ExecBatch(txs []string) {
 	}
 	defer clearTransaction(tx)
 	for _, v := range txs {
-		fmt.Println("v=",v)
 		_, err = tx.Exec(v)
 		if err != nil {
 			clearTransaction(tx)

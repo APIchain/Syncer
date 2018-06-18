@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Syncer/tokenSync"
-	//"github.com/Syncer/db"
+	"github.com/Syncer/db"
 	"os"
 	"strconv"
 	"github.com/Syncer/common/log"
@@ -27,12 +27,14 @@ func main() {
 		var sqltxt []string
 		fmt.Println("Block Height=",i)
 		str:=tokenSync.GetTokenTransfer(tokenTransferResult.TokenTransfer)
-		if str!=""{
-			sqltxt=append(sqltxt, str)
+		if str!=nil{
+			sqltxt=append(sqltxt, str...)
 		}
 		if len(sqltxt)>0{
-			fmt.Println(sqltxt)
-			//db.ExecBatch(sqltxt)
+			for _, v := range sqltxt {
+				fmt.Println(v)
+			}
+			db.ExecBatch(sqltxt)
 		}
 	}
 
