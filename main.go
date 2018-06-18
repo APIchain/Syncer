@@ -18,7 +18,6 @@ func main() {
 	log.Init(log.Path, log.Stdout)
 	var NEO_START_HEIGHT = os.Getenv("NEO_START_HEIGHT")
 	startHeight, _ := strconv.ParseInt(NEO_START_HEIGHT, 10, 64)
-	//startHeight=3500000
 	// Ether blockFetchWoker
 	blockFetchWoker := sync.NewBlockFetcher()
 	blockFetchWoker.Start()
@@ -28,7 +27,6 @@ func main() {
 	tokenWorker := tokenSync.NewTokenFetcher()
 	tokenWorker.Start()
 	Tokencompleted = make(chan tokenSync.TokenFetchResult, 1)
-
 	for i := 0; i < 4000000; i++ {
 		var sqltxt []string
 		//Get Ether
@@ -41,8 +39,8 @@ func main() {
 		if result2!=nil || len(result2)>0{
 			sqltxt=append(sqltxt, result2...)
 		}
+		log.Infof("[Height %d] will inset %d row",i+int(startHeight),len(sqltxt))
 		if len(sqltxt)>0{
-			log.Infof("[Height %d] will inset %d row",i+int(startHeight),len(sqltxt))
 			for _, v := range sqltxt {
 				log.Infof("%s",v)
 			}
