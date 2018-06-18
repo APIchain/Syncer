@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Syncer/common/config"
+	"github.com/Syncer/common/log"
 	"io/ioutil"
 	"net/http"
 	"math/big"
@@ -29,7 +30,7 @@ func NewBlockFetcher() BlockFetchWoker {
 }
 
 type BlockFetchResult struct {
-	Block metadata.BlockJson
+	Block metadata.RpcBlockJson
 	Rerr  error
 }
 
@@ -48,38 +49,41 @@ func (self *BlockFetchWoker) Start() {
 			select {
 			case task := <-self.task:
 				if task.Height == -1 {
-					task.Result <- BlockFetchResult{Block: metadata.BlockJson{}, Rerr: nil}
+					task.Result <- BlockFetchResult{Block: metadata.RpcBlockJson{}, Rerr: nil}
 					return
 				}
 
-				blockJson, err := self.getBlock(task.Height)
+				RpcBlockJson, err := self.getBlock(task.Height)
 
-				task.Result <- BlockFetchResult{Block: blockJson, Rerr: err}
+				task.Result <- BlockFetchResult{Block: RpcBlockJson, Rerr: err}
 
 			}
 		}
 	}()
 }
 
-func (self *BlockFetchWoker) getBlock(height int) (metadata.BlockJson, error) {
-	var rpcResp metadata.RemoteRpcResut
+func (self *BlockFetchWoker) getBlock(height int) (metadata.RpcBlockJson, error) {
+	var rpcResp metadata.RemoteRpcResutEth
 	data := fmt.Sprintf(`{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["%s",true],"id":1}`,toBlockNumArg(big.NewInt(int64(height))))
 	body := bytes.NewReader([]byte(data))
 	url := fmt.Sprintf("http://%s:%s",config.Parameters.SyncServer , config.Parameters.SyncServerPort)
 	resp, err := self.client.Post(url, "application/json", body)
 	if err != nil {
-		fmt.Println("http.Post, getblock failed, height", 10000, err)
+		log.Errorf("http.Post, getblock failed, height=%d,err=%s", height, err)
+		return metadata.RpcBlockJson{},err
 	}
 	defer resp.Body.Close()
 	buf, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("http.Post, getblock failed, height", 10000, err)
+		log.Errorf("http.Post, getblock failed, height=%d,err=%s", height, err)
+		return metadata.RpcBlockJson{},err
 	}
 	//fmt.Printf("%s\n",buf)
 
 	err = json.Unmarshal(buf, &rpcResp)
 	if err != nil {
-		return metadata.BlockJson{}, err
+		log.Errorf("getBlock Unmarsha1 failed error=%s",err)
+		return metadata.RpcBlockJson{}, err
 	}
 	return rpcResp.Result, nil
 }

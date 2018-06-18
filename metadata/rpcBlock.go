@@ -2,13 +2,15 @@ package metadata
 
 import "github.com/gin-gonic/gin/json"
 
-type RemoteRpcResut struct {
+type RemoteRpcResutEth struct {
 	Jsonrpc string
 	Id      int
-	Result  BlockJson
+	Result  RpcBlockJson
 }
 
-type BlockJson struct {
+
+
+type RpcBlockJson struct {
 	Author           string           `"&json:author&"`
 	Difficulty       string           `"&json:difficulty&"`
 	ExtraData        string           `"&json:extraData&"`
@@ -32,7 +34,7 @@ type BlockJson struct {
 	Transactions     []rpcTransaction `json:"transactions"`
 }
 
-func (this *BlockJson) Marshal() ([]byte, error) {
+func (this *RpcBlockJson) Marshal() ([]byte, error) {
 	str, err := json.Marshal(this)
 	if err != nil {
 		return nil, err
@@ -61,10 +63,4 @@ type rpcTransaction struct {
 	TransactionIndex string `"&json:transactionIndex&"`
 	V                string `"&json:v&"`
 	Value            string `"&json:value&"`
-}
-
-type BlockResult struct {
-	Height int
-	TokenTransfer    []string
-	EtherTransfer    []string
 }

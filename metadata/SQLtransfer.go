@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type TxTransfer struct {
+type SQLTransfer struct {
 	TxHash          string   `json:"TxHash" `
 	Timestamp       int64    `json:"Timestamp" `
 	Height          int64    `json:"Height" `
@@ -21,13 +21,13 @@ func int2time(timxe int64) string{
 	return tm.Format("2006-01-02 15:04:05")
 }
 
-func (this *TxTransfer) Marshal()string {
+func (this *SQLTransfer) Marshal()string {
 	return fmt.Sprintf("INSERT INTO ethTransfer(TxHash,Timestamp,Height,Sender,SendTo,Value) " +
 		"VALUES ('%s','%s',%d,'%s','%s','%s');",this.TxHash,int2time(this.Timestamp),this.Height,this.From,this.To,this.Value)
 }
 
-func UnMarshalTxTransfer(str []byte) (*TxTransfer, error) {
-	info := new(TxTransfer)
+func UnMarshalTxTransfer(str []byte) (*SQLTransfer, error) {
+	info := new(SQLTransfer)
 	if err := json.Unmarshal(str, info); err != nil {
 		return nil, err
 	}
